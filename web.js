@@ -3,7 +3,11 @@ var express = require('express'),
     server = require('http').createServer(app),
     io = require('socket.io').listen(server),
     swig = require('swig'),
-    path = require('path');
+    path = require('path'),
+    
+    mongoose = require('mongoose'),
+    Account = require('./server/models/Account'),
+    Message = require('./server/models/Message');
 
 var port = process.env.PORT || 4000;
 server.listen(port, function () {
@@ -25,6 +29,18 @@ app.configure(function () {
     app.use(express.session({ secret: 'secretsession' }));
 });
 
+var config = {
+    user: 'sa',
+    password: 'sa',
+    server: 'oceanic.mongohq.com',
+    port: '10067',
+    database: 'chat'
+};
+
+var connectionString = 'mongodb://' + config.user +  ':' + config.password + '@' + config.server + ':' + config.port + '/' + config.database;
+        
+mongoose.connect(connectionString);
+        
 app.get('/', function (req, res) {
     var email = req.query.email;
     if (!email) return res.redirect('/login');
@@ -51,6 +67,15 @@ io.sockets.on('connection', function (socket) {
     });
         
     socket.on('new message', function (message) {
+        var newMessage = new Message({
+            id: message.id,
+            email: socket.room.user,
+            message: message.msg,
+            date: new Date().toString()
+        });
+        
+        newMessage.save();
+
         socket.in(socket.room.current).emit('sent', { id: message.id, date: new Date() });
         socket.in(socket.room.current).broadcast.emit('new message', { msg: message.msg, date: new Date(), user: socket.room.user });
     });
