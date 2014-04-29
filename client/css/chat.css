@@ -1,0 +1,65 @@
+.chat {
+    width: 285px; 
+    bottom: 40px; 
+    position: absolute;
+}
+
+.panel-primary .chat-status.badge {
+    color: #31708f;
+    background-color: #fff;
+}
+
+.panel-danger .chat-status.badge {
+    color: #a94442;
+    background-color: #fff;
+}
+
+.messages {
+    list-style: none;
+    margin: 0px 15px 0px 15px;
+    padding: 0;
+}
+
+.messages li {
+    margin: 15px 0px 15px 0px;
+    padding-bottom: 5px;
+    border-bottom: 1px dotted #B3A9A9;
+}
+
+.messages li.left .chat-body {
+    margin-left: 45px;
+}
+
+.messages li.right .chat-body {
+    margin-right: 45px;
+}
+
+.messages li .chat-body p {
+    margin: 0;
+    color: #777777;
+}
+
+.panel .slidedown .glyphicon, .messages .glyphicon {
+    margin-right: 5px;
+}
+
+.panel-body {
+    overflow-y: auto;
+    max-height: 250px;
+    padding: 0px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #555;
+}
