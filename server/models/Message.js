@@ -1,4 +1,4 @@
-mongoose = require('mongoose');
+var mongoose = require('mongoose');
     
 var messageSchema = mongoose.Schema({
     id: { type: String, trim: true, required: true },

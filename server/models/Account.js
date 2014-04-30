@@ -1,5 +1,5 @@
-mongoose = require('mongoose');
-bcrypt = require('bcrypt-nodejs');
+var mongoose = require('mongoose'),
+    bcrypt = require('bcrypt-nodejs');
         
 var accountSchema = mongoose.Schema ({
     email: { type: String, trim: true, unique: true, required: true },
@@ -20,4 +20,4 @@ accountSchema.methods.validEmail = function(email) {
     return pattern.test(email);
 };
        
-mongoose.model('Account', accountSchema);
+module.exports = mongoose.model('Account', accountSchema);
