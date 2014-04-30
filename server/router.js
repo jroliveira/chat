@@ -1,10 +1,16 @@
-﻿var login = require('./routes/login'),
-    home = require('./routes/home');
+﻿var home = require('./routes/home'),
+    login = require('./routes/login'),
+    signup = require('./routes/signup'),
+    authorize = require('./authentication/authorize');
 
 module.exports = function (app) {
 
-    app.get('/', home.index);
+    app.get('/', authorize, home.index);
 
-    app.get('/login', login.get);
+    app.get('/entrar', login.get);
+    app.post('/entrar', login.post);
+    
+    app.get('/criar-conta', signup.get);
+    app.post('/criar-conta', signup.post);
 
 };

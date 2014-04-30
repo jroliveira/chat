@@ -5,6 +5,20 @@
     flash = require('connect-flash'),
     consolidate = require('consolidate');
 
+if (!String.prototype.format) {
+    String.prototype.format = function () {
+
+        var args = arguments;
+        var sprintfRegex = /\{(\d+)\}/g;
+
+        var sprintf = function (match, number) {
+            return number in args ? args[number] : match;
+        };
+
+        return this.replace(sprintfRegex, sprintf);
+    };
+}
+
 module.exports = function (app) {
 
     app.configure(function () {
@@ -24,6 +38,13 @@ module.exports = function (app) {
         app.use(passport.initialize());
         app.use(passport.session());
         app.use(flash());
+        
+        app.use(app.router);
+        app.use(function (err, req, res, next) {
+            console.error(err.stack);
+            
+            res.send(500);
+        });
 
     });
 

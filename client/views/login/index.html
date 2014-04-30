@@ -8,41 +8,57 @@
     <meta name="description" content="">
     <meta name="author" content="">
     
+    <link rel="stylesheet" href="../../../client/js/libs/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../client/css/style.css">
+    
     <style type="text/css">
         
         .panel-login {
             position: absolute;
 
             height: auto; 
-            top: 40%; 
-            margin-top: -50px; 
+            top: 30%; 
 
-            width: 450px; 
+            width: 460px;
             left: 50%; 
-            margin-left: -225px; 
+            margin-left: -230px;
+        }
+
+        .panel-login .create-account {
+            padding-left: 0px;
         }
 
     </style>
-
-    <link rel="stylesheet" href="../../../client/js/libs/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../../client/css/style.css">
 </head>
 <body>
     <div id="wrap">
         <div class="container">
-            <article>                
-                <form action="/" method="get">
-                    
-                    <div class="well panel-login">
-                        <div class="input-group">
-                            <input name="email" type="text" class="form-control" placeholder="Digite seu e-mail aqui..." />
-                            <span class="input-group-btn">
-                                <button type="submit" class="btn btn-success">enviar</button>
-                            </span>
-                        </div>
+            <article>
+                {% if (message) != '' %}
+                    <div class="alert alert-danger">
+                        <button data-dismiss="alert" class="close" type="button">x</button>
+                        {{ message }}
                     </div>
-                    
-                </form>
+                {% endif %}
+
+                <div class="panel panel-primary panel-login">
+                    <div class="panel-heading">
+                        <span class="glyphicon glyphicon-lock"></span>&nbsp; Entrar
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-inline" role="form" action="/entrar" method="post">
+                            <div class="form-group">
+                                <input name="email" type="text" class="form-control" placeholder="E-mail" />
+                            </div>
+                            <div class="form-group">
+                                <input name="password" type="password" class="form-control" placeholder="Senha" />
+                            </div>
+                            <button type="submit" class="btn btn-success">Enviar</button>
+                        </form>
+                        <a href="/criar-conta" class="create-account btn btn-link"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp; Criar conta</a>
+                    </div>
+                </div>
+
             </article>
         </div>
         <div id="push"></div>
