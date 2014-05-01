@@ -17,7 +17,7 @@ define([
         render: function () {
             var data = {
                 id: this.model.id,
-                user: this.model.user,
+                user: this.model.user.substring(0, this.model.user.indexOf('@')),
                 letterImage: this.model.user.substring(0, 2),
                 date: !this.model.date ? '--/-- --:--' : $.format.date(new Date(this.model.date), "dd/MM hh:mm"),
                 message: this.model.msg

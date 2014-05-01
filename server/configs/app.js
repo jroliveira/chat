@@ -1,9 +1,10 @@
-﻿var express = require('express'),
+var express = require('express'),
     swig = require('swig'),
     path = require('path'),
     passport = require('passport'),
     flash = require('connect-flash'),
-    consolidate = require('consolidate');
+    consolidate = require('consolidate'),
+    mongoose = require("mongoose");
 
 if (!String.prototype.format) {
     String.prototype.format = function () {
@@ -19,10 +20,19 @@ if (!String.prototype.format) {
     };
 }
 
-module.exports = function (app) {
+global.KEY = 'express.sid';
+global.SECRET = 'express';
 
+global.store = new express.session.MemoryStore();
+global.cookie = express.cookieParser(SECRET);
+
+module.exports = function (app) {
+    
     app.configure(function () {
 
+        app.use(cookie);
+        app.use(express.session({ secret: SECRET, key: KEY, store: store }));
+        
         app.use(express.json());
         app.use(express.urlencoded());
 
@@ -33,8 +43,6 @@ module.exports = function (app) {
         app.set('view engine', 'html');
         app.use('/client', express.static(path.join(__dirname, '/../../client')));
 
-        app.use(express.cookieParser());
-        app.use(express.session({ secret: 'secretsession' }));
         app.use(passport.initialize());
         app.use(passport.session());
         app.use(flash());

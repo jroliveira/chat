@@ -41,7 +41,7 @@ define([
  
             this.socket.on('connect', function () {
 
-                var room = { current: '1', user: $('#user').val() };
+                var room = { current: '1' };
                 self.socket.emit('room', room);
 
                 self.socket.on('connected', function() {
@@ -102,7 +102,7 @@ define([
 
             var messageId = this.partGuid();
             
-            var message = { id: messageId, msg: $message.val(), date: null, user: $('#user').val() };
+            var message = { id: messageId, msg: $message.val(), date: null, user: 'eu' };
             var messageView = new MyMessageView({ model: message });
             this.showMessage(messageView);
 

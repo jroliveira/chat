@@ -4,6 +4,7 @@ require('./server/configs/app')(app);
 
 var server = require('http').createServer(app),
     io = require('socket.io').listen(server);
+require('./server/configs/socket')(io);
 require('./server/socket')(io);
 
 require('./server/configs/mongoose')();

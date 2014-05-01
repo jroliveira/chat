@@ -1,37 +1,37 @@
-﻿var Message = require('./models/Message');
+var Message = require('./models/Message');
 
 module.exports = function (io) {
 
-    io.set('log level', 1);
+    io.sockets.on('connection', function (client) {
 
-    io.sockets.on('connection', function (socket) {
+        var session = client.handshake.session;
 
-        socket.on('room', function (room) {
-            if (socket.room) socket.leave(socket.room);
+        client.on('room', function (room) {
+            if (client.room) socket.leave(client.room);
 
-            socket.room = room;
-            socket.join(room.current);
+            client.room = room;
+            client.join(room.current);
 
-            socket.in(room.current).emit('connected');
-            socket.in(room.current).broadcast.emit('new user', { msg: 'entrou', date: new Date(), user: room.user });
+            client.in(room.current).emit('connected');
+            client.in(room.current).broadcast.emit('new user', { msg: 'entrou', date: new Date(), user: session.user.email });
         });
 
-        socket.on('new message', function (message) {
+        client.on('new message', function (message) {
             var newMessage = new Message({
                 id: message.id,
-                email: socket.room.user,
+                email: session.user.email,
                 message: message.msg,
                 date: new Date().toString()
             });
 
             newMessage.save();
 
-            socket.in(socket.room.current).emit('sent', { id: message.id, date: new Date() });
-            socket.in(socket.room.current).broadcast.emit('new message', { msg: message.msg, date: new Date(), user: socket.room.user });
+            client.in(client.room.current).emit('sent', { id: message.id, date: new Date() });
+            client.in(client.room.current).broadcast.emit('new message', { msg: message.msg, date: new Date(), user: session.user.email });
         });
 
-        socket.on('disconnect', function () {
-            socket.broadcast.emit('user left', { msg: 'saiu', date: new Date(), user: socket.room.user });
+        client.on('disconnect', function () {
+            client.broadcast.emit('user left', { msg: 'saiu', date: new Date(), user: session.user.email });
         });
 
     });
