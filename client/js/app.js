@@ -1,12 +1,17 @@
 define([
     'underscore',
     'backbone',
+    'localforage',
+
     'router',
     
-    'text!templates/loading.html'
+    'text!templates/loading.html',
+    'backbone.viewOptions'
 ], function (
     _,
     Backbone,
+    database,
+    
     router,
      
     templateLoading
@@ -20,6 +25,8 @@ define([
         }
     };
 
+    Backbone.ViewOptions.add(Backbone.View.prototype);
+
     _.each(["Model", "Collection"], function(name) {
         var ctor = Backbone[name];
         var fetch = ctor.prototype.fetch;
@@ -28,6 +35,12 @@ define([
             this.trigger("fetch", this);
             return fetch.apply(this, arguments);
         };
+    });
+
+    database.config({
+        name: 'chat',
+        storeName: 'messages',
+        description: 'unsent messages'
     });
 
     var initialize = function () {        

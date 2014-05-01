@@ -3,13 +3,15 @@ require.config({
         jquery: 'libs/jquery/jquery',
         underscore: 'libs/underscore/underscore',
         backbone: 'libs/backbone/backbone',
+        'backbone.viewOptions': 'libs/backbone/backbone.viewOptions',
         order: 'libs/require/order',
         text: 'libs/require/text',
         bootstrap: 'libs/bootstrap/js/bootstrap',
         socketio: '../../socket.io/socket.io',
         'jquery.format': 'libs/jquery.format-1.2/jquery.format-1.2',
         datejs: 'libs/datejs/date',
-        'datejs.pt-BR': 'libs/datejs/date-pt-BR'
+        'datejs.pt-BR': 'libs/datejs/date-pt-BR',
+        localforage: 'libs/localforage/localforage'
     },
 
     shim: {
@@ -20,23 +22,26 @@ require.config({
             exports: '_'
         },
         backbone: {
-            deps: ["underscore", "jquery"],
-            exports: "Backbone"
+            deps: ['underscore', 'jquery'],
+            exports: 'Backbone'
         },
         bootstrap: {
-            deps: ["jquery"]
+            deps: ['jquery']
         },
         socketio: {
             exports: 'io'
         },
         'jquery.format': {
-            deps: ["jquery"]
+            deps: ['jquery']
         },
         datejs: {
-            deps: ["jquery"]
+            deps: ['jquery']
         },
         'datejs.pt-BR': {
-            deps: ["jquery", "datejs"]
+            deps: ['jquery', 'datejs']
+        },
+        localforage: {
+            exports: 'database'
         }
     }
 });

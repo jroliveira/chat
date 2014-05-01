@@ -3,9 +3,11 @@ define([
     'underscore',
     'backbone',
     'socketio',
+
+    'views/chat/mailslot',
     
-    'views/chat/FriendMessageView',
-    'views/chat/MyMessageView',
+    'views/chat/message/FriendMessageView',
+    'views/chat/message/MyMessageView',
     
     'text!templates/chat/chat.html',
     'jquery.format'
@@ -14,6 +16,8 @@ define([
     _,
     Backbone,
     io,
+
+    mailslot,
      
     FriendMessageView,
     MyMessageView,
@@ -23,12 +27,18 @@ define([
 
     var ChatView = Backbone.View.extend({
 
-        el: $('.chat'),        
+        el: $('.chat'),
+        
+        options: ['socket'],
 
         events: {
             'click #send': 'send',
             'keypress #message': 'enter',
             'click .panel-primary > .panel-heading': 'toggle'
+        },
+
+        initialize: function (options) {
+            this.setOptions(options);
         },
         
         render: function () {
@@ -36,37 +46,39 @@ define([
             $('.chat > .panel > .panel-body, .chat > .panel > .panel-footer').toggle();
             
             var self = this;
-            
-            this.socket = io.connect();
- 
-            this.socket.on('connect', function () {
+
+            var socket = io.connect();
+
+            socket.on('connect', function () {
 
                 var room = { current: '1' };
-                self.socket.emit('room', room);
+                socket.emit('room', room);
 
-                self.socket.on('connected', function() {
+                socket.on('connected', function () {
+                    mailslot.initialize(socket);
+                    
                     $('.chat > .panel > .panel-body, .chat > .panel > .panel-footer').toggle();
                     $('.chat > .panel').removeClass('panel-danger');
                     $('.chat > .panel').addClass('panel-primary');
                     $('.chat > .panel > .panel-heading > small').html('conectado');
                 });
 
-                self.socket.on('new user', function (message) {
+                socket.on('new user', function (message) {
                     var messageView = new FriendMessageView({ model: message });
                     self.showMessage(messageView);
                 });
 
-                self.socket.on('user left', function (message) {
+                socket.on('user left', function (message) {
                     var messageView = new FriendMessageView({ model: message });
                     self.showMessage(messageView);
                 });
 
-                self.socket.on('new message', function (message) {
+                socket.on('new message', function (message) {
                     var messageView = new FriendMessageView({ model: message });
                     self.showMessage(messageView);
                 });
 
-                self.socket.on('sent', function (message) {
+                socket.on('sent', function (message) {
                     var date = $.format.date(new Date(message.date), "dd/MM HH:mm");
                     $('#' + message.id + ' > .date').html(date);
 
@@ -106,8 +118,6 @@ define([
             var messageView = new MyMessageView({ model: message });
             this.showMessage(messageView);
 
-            var newMessage = { id: messageId, msg: $message.val() };
-            this.socket.emit('new message', newMessage);
             $message.val('');
         },
         

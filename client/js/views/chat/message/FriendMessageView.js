@@ -1,5 +1,5 @@
 define([
-    'views/chat/MessageView',
+    'views/chat/message/MessageView',
     
     'text!templates/chat/friend-message.html'
 ], function (

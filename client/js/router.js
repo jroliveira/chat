@@ -1,7 +1,7 @@
 define([
     'jquery',
     'backbone',
-    
+
     'views/chat/ChatView',
     'views/home/IndexView'
 ], function (
@@ -34,8 +34,8 @@ define([
 
     var initialize = function () {
         
-        this.chatView = new ChatView;
-        this.chatView.render();
+        this.chatView = new ChatView();
+        this.chatView.render();        
         
         var appRouter = new AppRouter;
         

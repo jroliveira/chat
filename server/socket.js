@@ -7,8 +7,8 @@ module.exports = function (io) {
         var session = client.handshake.session;
 
         client.on('room', function (room) {
-            if (client.room) socket.leave(client.room);
-
+            if (client.room) socket.leave(client.room.current);
+            
             client.room = room;
             client.join(room.current);
 
@@ -19,7 +19,7 @@ module.exports = function (io) {
         client.on('new message', function (message) {
             var newMessage = new Message({
                 id: message.id,
-                email: session.user.email,
+                account: session.user._id,
                 message: message.msg,
                 date: new Date().toString()
             });
