@@ -21,11 +21,15 @@ define([
 
             var self = this;
             database.ready(function () {
-                database.length(function (length) {
-                    var message = { id: self.model.id, msg: self.model.msg, sent: 0 };
-
-                    var index = length + 1;
-                    database.setItem(index, message);
+                database.getItem('indexes', function (index) {
+                    var key = index + 1;
+                        
+                    database.removeItem('indexes', function () {
+                        database.setItem('indexes', key);
+                            
+                        var message = { id: self.model.id, msg: self.model.msg, sent: 0 };
+                        database.setItem(key, message);
+                    });
                 });
             });
         }

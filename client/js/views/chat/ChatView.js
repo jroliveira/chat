@@ -3,12 +3,13 @@ define([
     'underscore',
     'backbone',
     'socketio',
+    'localforage',
 
     'views/chat/mailslot',
-    
+
     'views/chat/message/FriendMessageView',
     'views/chat/message/MyMessageView',
-    
+
     'text!templates/chat/chat.html',
     'jquery.format'
 ], function (
@@ -16,19 +17,20 @@ define([
     _,
     Backbone,
     io,
+    database,
 
     mailslot,
-     
+
     FriendMessageView,
     MyMessageView,
-     
+
     template
 ) {
 
     var ChatView = Backbone.View.extend({
 
         el: $('.chat'),
-        
+
         options: ['socket'],
 
         events: {
@@ -40,27 +42,51 @@ define([
         initialize: function (options) {
             this.setOptions(options);
         },
-        
+
         render: function () {
             this.$el.html(template);
-            $('.chat > .panel > .panel-body, .chat > .panel > .panel-footer').toggle();
-            
+
             var self = this;
 
             var socket = io.connect();
 
-            socket.on('connect', function () {
+            mailslot.initialize(socket);
 
+            socket.on('disconnect', function () {
+                self.showStatus(false, 'desconectado');
+
+                $(document).trigger('connected', [false]);
+            });
+
+            socket.on('connecting', function () {
+                self.showStatus(false, 'aguarde, conectando...');
+            });
+
+            socket.on('connect_failed', function() {
+                self.showStatus(false, 'falha ao conectar');
+            });
+
+            socket.on('reconnect', function() {
+                self.showStatus(true, 'reconectado');
+            });
+
+            socket.on('reconnecting', function() {
+                self.showStatus(false, 'aguarde, reconectando...');
+            });
+
+            socket.on('reconnect_failed', function () {
+                self.showStatus(false, 'falha ao reconectar');
+            });
+
+            socket.on('connect', function () {
                 var room = { current: '1' };
                 socket.emit('room', room);
 
                 socket.on('connected', function () {
-                    mailslot.initialize(socket);
+                    self.showStatus(true, 'conectado');
+                    console.log('conectado');
                     
-                    $('.chat > .panel > .panel-body, .chat > .panel > .panel-footer').toggle();
-                    $('.chat > .panel').removeClass('panel-danger');
-                    $('.chat > .panel').addClass('panel-primary');
-                    $('.chat > .panel > .panel-heading > small').html('conectado');
+                    $(document).trigger('connected', [true]);
                 });
 
                 socket.on('new user', function (message) {
@@ -79,19 +105,38 @@ define([
                 });
 
                 socket.on('sent', function (message) {
-                    var date = $.format.date(new Date(message.date), "dd/MM HH:mm");
-                    $('#' + message.id + ' > .date').html(date);
+                    database.ready(function () {
+                        database.removeItem(message.key);
+                        
+                        var date = $.format.date(new Date(message.date), "dd/MM HH:mm");
+                        $('#' + message.id + ' > .date').html(date);
+                        $('#' + message.id + ' > .icon').removeClass('glyphicon-time');
+                        $('#' + message.id + ' > .icon').addClass('glyphicon-ok');
+                    });
+                });
 
-                    $('#' + message.id + ' > .icon').removeClass('glyphicon-time');
-                    $('#' + message.id + ' > .icon').addClass('glyphicon-ok');
+                socket.on('error', function (err) {
+                    if (err == 'handshake unauthorized') return window.location = '/entrar';
                 });
 
             });
-            
+
             return this;
         },
 
-        showMessage: function(messageView) {
+        showStatus: function (connected, message) {
+            if (connected) {
+                $('.chat > .panel').removeClass('panel-danger');
+                $('.chat > .panel').addClass('panel-primary');
+            } else {
+                $('.chat > .panel').removeClass('panel-primary');
+                $('.chat > .panel').addClass('panel-danger');
+            }
+            
+            $('.chat > .panel > .panel-heading > small').html(message);
+        },
+
+        showMessage: function (messageView) {
             var content = messageView.render();
             $('#messages').append(content.el);
 
@@ -101,11 +146,11 @@ define([
         partGuid: function () {
             return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
         },
-        
+
         enter: function (e) {
             if (e.keyCode === 13) this.send(e);
         },
-        
+
         send: function (e) {
             e.preventDefault();
 
@@ -113,14 +158,14 @@ define([
             if (!$message.val()) return;
 
             var messageId = this.partGuid();
-            
+
             var message = { id: messageId, msg: $message.val(), date: null, user: 'eu' };
             var messageView = new MyMessageView({ model: message });
             this.showMessage(messageView);
 
             $message.val('');
         },
-        
+
         toggle: function (e) {
             $('.chat > .panel > .panel-body, .chat > .panel > .panel-footer').toggle();
         }

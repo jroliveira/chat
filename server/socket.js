@@ -19,14 +19,14 @@ module.exports = function (io) {
         client.on('new message', function (message) {
             var newMessage = new Message({
                 id: message.id,
-                account: session.user._id,
                 message: message.msg,
-                date: new Date().toString()
+                date: new Date().toString(),
+                account: session.user._id
             });
 
             newMessage.save();
 
-            client.in(client.room.current).emit('sent', { id: message.id, date: new Date() });
+            client.in(client.room.current).emit('sent', { id: message.id, date: new Date(), key: message.key });
             client.in(client.room.current).broadcast.emit('new message', { msg: message.msg, date: new Date(), user: session.user.email });
         });
 
