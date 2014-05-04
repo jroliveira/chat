@@ -35,7 +35,7 @@
         <div class="container">
             <article>
                 {% if (message) != '' %}
-                    <div class="alert alert-danger">
+                    <div class="alert {{ type }}">
                         <button data-dismiss="alert" class="close" type="button">x</button>
                         {{ message }}
                     </div>
@@ -46,7 +46,7 @@
                         <span class="glyphicon glyphicon-lock"></span>&nbsp; Entrar
                     </div>
                     <div class="panel-body">
-                        <form class="form-inline" role="form" action="/entrar" method="post">
+                        <form class="form-inline" role="form" action="/exemplo/entrar" method="post">
                             <div class="form-group">
                                 <input name="email" type="text" class="form-control" placeholder="E-mail" />
                             </div>
@@ -55,7 +55,7 @@
                             </div>
                             <button type="submit" class="btn btn-success">Enviar</button>
                         </form>
-                        <a href="/criar-conta" class="create-account btn btn-link"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp; Criar conta</a>
+                        <a href="/suporte/criar-conta" class="create-account btn btn-link"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp; Criar conta</a>
                     </div>
                 </div>
 

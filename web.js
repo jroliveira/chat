@@ -13,7 +13,7 @@ require('./server/configs/passport')();
 
 require('./server/router')(app);
 
-var port = process.env.PORT || 8000;
+var port = process.env.PORT || 4000;
 server.listen(port, function () {
     console.log("Listening on " + port);
 });

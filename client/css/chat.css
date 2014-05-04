@@ -1,6 +1,6 @@
 .chat {
     width: 285px; 
-    bottom: 40px; 
+    bottom: 0px;
     position: absolute;
 }
 
@@ -47,6 +47,10 @@
     overflow-y: auto;
     max-height: 250px;
     padding: 0px;
+}
+
+.panel {
+    margin-bottom: 0px;
 }
 
 ::-webkit-scrollbar-track {

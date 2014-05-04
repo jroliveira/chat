@@ -1,4 +1,12 @@
 require.config({
+    config: {
+        text: {
+            useXhr: function (url, protocol, hostname, port) {
+                return true;
+            }
+        }
+    },
+    
     paths: {
         jquery: 'libs/jquery/jquery',
         underscore: 'libs/underscore/underscore',

@@ -6,14 +6,14 @@ exports.get = function (req, res) {
     if (message.length === 0)
         message = [{ message: '', type: '' }];
 
-    res.render('login/index', {
+    res.render('sample/login/index', {
         message: message[0].message,
         type: message[0].type
     });
 };
 
 exports.post = passport.authenticate('local-login', {
-    successRedirect: '/',
-    failureRedirect: '/entrar',
+    successRedirect: '/exemplo/',
+    failureRedirect: '/exemplo/entrar',
     failureFlash: true
 });

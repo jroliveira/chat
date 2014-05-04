@@ -7,10 +7,9 @@ module.exports = function (io) {
             if (err) return accept(null, false);
                 
             var sessionId = data.signedCookies[KEY];
-            
             store.get(sessionId, function (err, session) {
                 if (err || !session) return accept(null, false);
-                    
+
                 data.session = session;
                 accept(null, true);
             });

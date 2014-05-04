@@ -58,7 +58,7 @@ module.exports = function () {
                 return done(null, false, req.flash('loginMessage', { message: 'E-mail ou senha inválida', type: 'alert-danger' }));
 
             req.session.user = account;
-            
+
             return done(null, account);
         });
     }));

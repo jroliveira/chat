@@ -46,9 +46,10 @@ define([
         render: function () {
             this.$el.html(template);
 
-            var self = this;
+            var self = this,
+                relativePath = $('#relativePath').val();
 
-            var socket = io.connect();
+            var socket = io.connect(relativePath);
 
             mailslot.initialize(socket);
 
@@ -84,8 +85,6 @@ define([
 
                 socket.on('connected', function () {
                     self.showStatus(true, 'conectado');
-                    console.log('conectado');
-                    
                     $(document).trigger('connected', [true]);
                 });
 
