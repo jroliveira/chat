@@ -4,7 +4,8 @@ var express = require('express'),
     passport = require('passport'),
     flash = require('connect-flash'),
     consolidate = require('consolidate'),
-    mongoose = require("mongoose");
+    mongoose = require('mongoose'),
+	Marinet = require('./../../node_modules/marinet-provider-nodejs/lib/MarineteRestfulProvider');
 
 if (!String.prototype.format) {
     String.prototype.format = function () {
@@ -27,6 +28,12 @@ global.store = new express.session.MemoryStore();
 global.cookie = express.cookieParser(SECRET);
 
 module.exports = function (app) {
+
+	var provider = new Marinet({ 
+		rootUrl: 'http://marinet.apphb.com',
+        appName: 'chat',
+        appKey: 'kK9IlVj7fkyPQYplgsKysw'
+    });
 
     app.configure(function () {
 
@@ -64,7 +71,11 @@ module.exports = function (app) {
 
         app.use(app.router);
         app.use(function (err, req, res, next) {
-            console.error(err.stack);
+            provider.error({
+                user: req.user ? req.user.email : 'unauthenticated',
+                message: err.message,
+                exception: err.stack
+            });
             
             res.send(500);
         });
