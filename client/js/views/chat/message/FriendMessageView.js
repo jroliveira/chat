@@ -1,23 +1,9 @@
-define([
-    'views/chat/message/MessageView',
-    
-    'text!templates/chat/friend-message.html'
-], function (
-    MessageView,
-     
-    template
-) {
+FriendMessageView = MessageView.extend({
 
-    var FriendMessageView = MessageView.extend({
+    className: 'left clearfix',
 
-        className: 'left clearfix',
-
-        initialize: function () {
-            this.template = template;
-        }
-
-    });
-
-    return FriendMessageView;
+    initialize: function () {
+        this.template = $('#friendMessageTemplate').html();
+    }
 
 });

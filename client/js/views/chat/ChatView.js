@@ -1,176 +1,144 @@
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'socketio',
-    'localforage',
+ChatView = Backbone.View.extend({
 
-    'views/chat/mailslot',
+    el: $('.chat'),
 
-    'views/chat/message/FriendMessageView',
-    'views/chat/message/MyMessageView',
+    options: ['socket'],
 
-    'text!templates/chat/chat.html',
-    'jquery.format'
-], function (
-    $,
-    _,
-    Backbone,
-    io,
-    database,
+    events: {
+        'click #send': 'send',
+        'keypress #message': 'enter',
+        'click .panel-primary > .panel-heading': 'toggle'
+    },
 
-    mailslot,
+    initialize: function (options) {
+        this.setOptions(options);
+    },
 
-    FriendMessageView,
-    MyMessageView,
+    render: function () {
+        var self = this,
+            relativePath = $('#relativePath').val(),
+            template = $('#chatTemplate').html();
+        
+        this.$el.html(template);
 
-    template
-) {
+        var socket = io.connect(relativePath);
 
-    var ChatView = Backbone.View.extend({
+        mailslot.initialize(socket);
 
-        el: $('.chat'),
+        socket.on('disconnect', function () {
+            self.showStatus(false, 'desconectado');
 
-        options: ['socket'],
+            $(document).trigger('connected', [false]);
+        });
 
-        events: {
-            'click #send': 'send',
-            'keypress #message': 'enter',
-            'click .panel-primary > .panel-heading': 'toggle'
-        },
+        socket.on('connecting', function () {
+            self.showStatus(false, 'aguarde, conectando...');
+        });
 
-        initialize: function (options) {
-            this.setOptions(options);
-        },
+        socket.on('connect_failed', function() {
+            self.showStatus(false, 'falha ao conectar');
+        });
 
-        render: function () {
-            this.$el.html(template);
+        socket.on('reconnect', function() {
+            self.showStatus(true, 'reconectado');
+        });
 
-            var self = this,
-                relativePath = $('#relativePath').val();
+        socket.on('reconnecting', function() {
+            self.showStatus(false, 'aguarde, reconectando...');
+        });
 
-            var socket = io.connect(relativePath);
+        socket.on('reconnect_failed', function () {
+            self.showStatus(false, 'falha ao reconectar');
+        });
 
-            mailslot.initialize(socket);
+        socket.on('connect', function () {
+            var room = { current: '1' };
+            socket.emit('room', room);
 
-            socket.on('disconnect', function () {
-                self.showStatus(false, 'desconectado');
-
-                $(document).trigger('connected', [false]);
+            socket.on('connected', function () {
+                self.showStatus(true, 'conectado');
+                $(document).trigger('connected', [true]);
             });
 
-            socket.on('connecting', function () {
-                self.showStatus(false, 'aguarde, conectando...');
+            socket.on('new user', function (message) {
+                var messageView = new FriendMessageView({ model: message });
+                self.showMessage(messageView);
             });
 
-            socket.on('connect_failed', function() {
-                self.showStatus(false, 'falha ao conectar');
+            socket.on('user left', function (message) {
+                var messageView = new FriendMessageView({ model: message });
+                self.showMessage(messageView);
             });
 
-            socket.on('reconnect', function() {
-                self.showStatus(true, 'reconectado');
+            socket.on('new message', function (message) {
+                var messageView = new FriendMessageView({ model: message });
+                self.showMessage(messageView);
             });
 
-            socket.on('reconnecting', function() {
-                self.showStatus(false, 'aguarde, reconectando...');
-            });
-
-            socket.on('reconnect_failed', function () {
-                self.showStatus(false, 'falha ao reconectar');
-            });
-
-            socket.on('connect', function () {
-                var room = { current: '1' };
-                socket.emit('room', room);
-
-                socket.on('connected', function () {
-                    self.showStatus(true, 'conectado');
-                    $(document).trigger('connected', [true]);
-                });
-
-                socket.on('new user', function (message) {
-                    var messageView = new FriendMessageView({ model: message });
-                    self.showMessage(messageView);
-                });
-
-                socket.on('user left', function (message) {
-                    var messageView = new FriendMessageView({ model: message });
-                    self.showMessage(messageView);
-                });
-
-                socket.on('new message', function (message) {
-                    var messageView = new FriendMessageView({ model: message });
-                    self.showMessage(messageView);
-                });
-
-                socket.on('sent', function (message) {
-                    database.ready(function () {
-                        database.removeItem(message.key);
+            socket.on('sent', function (message) {
+                localforage.ready(function () {
+                    localforage.removeItem(message.key);
                         
-                        var date = $.format.date(new Date(message.date), "dd/MM HH:mm");
-                        $('#' + message.id + ' > .date').html(date);
-                        $('#' + message.id + ' > .icon').removeClass('glyphicon-time');
-                        $('#' + message.id + ' > .icon').addClass('glyphicon-ok');
-                    });
+                    var date = $.format.date(new Date(message.date), "dd/MM HH:mm");
+                    $('#' + message.id + ' > .date').html(date);
+                    $('#' + message.id + ' > .icon').removeClass('glyphicon-time');
+                    $('#' + message.id + ' > .icon').addClass('glyphicon-ok');
                 });
-
-                socket.on('error', function (err) {
-                    if (err == 'handshake unauthorized') return window.location = '/entrar';
-                });
-
             });
 
-            return this;
-        },
+            socket.on('error', function (err) {
+                if (err == 'handshake unauthorized') return window.location = '/entrar';
+            });
 
-        showStatus: function (connected, message) {
-            if (connected) {
-                $('.chat > .panel').removeClass('panel-danger');
-                $('.chat > .panel').addClass('panel-primary');
-            } else {
-                $('.chat > .panel').removeClass('panel-primary');
-                $('.chat > .panel').addClass('panel-danger');
-            }
-            
-            $('.chat > .panel > .panel-heading > small').html(message);
-        },
+        });
 
-        showMessage: function (messageView) {
-            var content = messageView.render();
-            $('#messages').append(content.el);
+        return this;
+    },
 
-            $('.panel-body').animate({ scrollTop: $('#messages').height() }, 1000);
-        },
-
-        partGuid: function () {
-            return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-        },
-
-        enter: function (e) {
-            if (e.keyCode === 13) this.send(e);
-        },
-
-        send: function (e) {
-            e.preventDefault();
-
-            var $message = $('#message');
-            if (!$message.val()) return;
-
-            var messageId = this.partGuid();
-
-            var message = { id: messageId, msg: $message.val(), date: null, user: 'eu' };
-            var messageView = new MyMessageView({ model: message });
-            this.showMessage(messageView);
-
-            $message.val('');
-        },
-
-        toggle: function (e) {
-            $('.chat > .panel > .panel-body, .chat > .panel > .panel-footer').toggle();
+    showStatus: function (connected, message) {
+        if (connected) {
+            $('.chat > .panel').removeClass('panel-danger');
+            $('.chat > .panel').addClass('panel-primary');
+        } else {
+            $('.chat > .panel').removeClass('panel-primary');
+            $('.chat > .panel').addClass('panel-danger');
         }
+            
+        $('.chat > .panel > .panel-heading > small').html(message);
+    },
 
-    });
+    showMessage: function (messageView) {
+        var content = messageView.render();
+        $('#messages').append(content.el);
 
-    return ChatView;
+        $('.panel-body').animate({ scrollTop: $('#messages').height() }, 1000);
+    },
+
+    partGuid: function () {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    },
+
+    enter: function (e) {
+        if (e.keyCode === 13) this.send(e);
+    },
+
+    send: function (e) {
+        e.preventDefault();
+
+        var $message = $('#message');
+        if (!$message.val()) return;
+
+        var messageId = this.partGuid();
+
+        var message = { id: messageId, msg: $message.val(), date: null, user: 'eu' };
+        var messageView = new MyMessageView({ model: message });
+        this.showMessage(messageView);
+
+        $message.val('');
+    },
+
+    toggle: function (e) {
+        $('.chat > .panel > .panel-body, .chat > .panel > .panel-footer').toggle();
+    }
 
 });

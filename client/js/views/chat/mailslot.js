@@ -1,57 +1,47 @@
-﻿define([
-    'jquery',
-    'localforage'
-], function (
-    $,
-    database
-) {
+﻿var server,
+    connected = false;
 
-    var server,
-        connected = false;
-
-    function verify() {
-        if (!connected) return;
+function verify() {
+    if (!connected) return;
         
-        database.length(function (length) {
-            for (var i = 0; i < length; ++i) {
-                database.key(i, function (key) {
-                    if (key != 'indexes') {
-                        database.getItem(key, function (message) {
-                            if (message.sent === 1) return;
+    localforage.length(function (length) {
+        for (var i = 0; i < length; ++i) {
+            localforage.key(i, function (key) {
+                if (key != 'indexes') {
+                    localforage.getItem(key, function (message) {
+                        if (message.sent === 1) return;
 
-                            var newMessage = { id: message.id, msg: message.msg, key: key };
+                        var newMessage = { id: message.id, msg: message.msg, key: key };
 
-                            server.emit('new message', newMessage);
+                        server.emit('new message', newMessage);
 
-                            message.sent = 1;
-                            database.removeItem(key, function () {
-                                database.setItem(key, message);
-                            });
+                        message.sent = 1;
+                        localforage.removeItem(key, function () {
+                            localforage.setItem(key, message);
                         });
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+        }
+    });
 
-        setTimeout(verify, 5000);
+    setTimeout(verify, 5000);
+}
+
+mailslot = {
+
+    initialize: function (socket) {
+        $(document).on('connected', $.proxy(this.connected, this));
+            
+        server = socket;
+
+        verify();
+    },
+        
+    connected: function(event, isConnected) {
+        connected = isConnected;
+
+        verify();
     }
 
-    return {
-
-        initialize: function (socket) {
-            $(document).on('connected', $.proxy(this.connected, this));
-            
-            server = socket;
-
-            verify();
-        },
-        
-        connected: function(event, isConnected) {
-            connected = isConnected;
-
-            verify();
-        },
-
-    };
-
-});
+};

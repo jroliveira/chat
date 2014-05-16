@@ -1,41 +1,23 @@
-define([
-    'localforage',
-    
-    'views/chat/message/MessageView',
+MyMessageView = MessageView.extend({
 
-    'text!templates/chat/my-message.html'
-], function (
-    database,
-    
-    MessageView,
-    
-    template
-) {
+    className: 'right clearfix',
 
-    var MyMessageView = MessageView.extend({
+    initialize: function () {
+        this.template = $('#myMessageTemplate').html();
 
-        className: 'right clearfix',
-
-        initialize: function () {
-            this.template = template;
-
-            var self = this;
-            database.ready(function () {
-                database.getItem('indexes', function (index) {
-                    var key = index + 1;
+        var self = this;
+        localforage.ready(function () {
+            localforage.getItem('indexes', function (index) {
+                var key = index + 1;
                         
-                    database.removeItem('indexes', function () {
-                        database.setItem('indexes', key);
+                localforage.removeItem('indexes', function () {
+                    localforage.setItem('indexes', key);
                             
-                        var message = { id: self.model.id, msg: self.model.msg, sent: 0 };
-                        database.setItem(key, message);
-                    });
+                    var message = { id: self.model.id, msg: self.model.msg, sent: 0 };
+                    localforage.setItem(key, message);
                 });
             });
-        }
-
-    });
-
-    return MyMessageView;
+        });
+    }
 
 });
