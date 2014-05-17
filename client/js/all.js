@@ -3,8 +3,8 @@
         //relativePath = 'http://widget-chat.herokuapp.com';
         relativePath = 'http://localhost:4000';
     
-    if (window.jQuery === undefined || window.jQuery.fn.jquery !== '1.10.2') {
-        createScriptReferenceAsync(relativePath + '/client/js/libs/jquery/jquery.js', function () {
+    if (window.jQuery === undefined || window.jQuery.fn.jquery !== '2.1.1') {
+    	createScriptReferenceAsync(relativePath + '/client/bower_components/jquery/dist/jquery.js', function () {
             jQuery = window.jQuery.noConflict(true);
             main();
         });
@@ -48,7 +48,7 @@
         var defer = $.Deferred();
         
         $.when(
-            createStyleReferenceSync(relativePath + '/client/js/libs/bootstrap/css/bootstrap.css', $),
+            createStyleReferenceSync(relativePath + '/client/bower_components/bootstrap/dist/css/bootstrap.css', $),
             createStyleReferenceSync(relativePath + '/client/css/chat.css', $)
         ).then(function() {
             defer.resolve();
@@ -60,23 +60,28 @@
     function loadScripts($) {
         var defer = $.Deferred();
 
+    	/* components */
+
         $.when(
-            createScriptReferenceSync(relativePath + '/client/js/libs/jquery/jquery.js', $)
+            createScriptReferenceSync(relativePath + '/client/bower_components/jquery/dist/jquery.js', $)
         ).then(function () {
             $.when(
-                createScriptReferenceSync(relativePath + '/client/js/libs/underscore/underscore.js', $),
-                createScriptReferenceSync(relativePath + '/client/js/libs/localforage/localforage.js', $),
-                createScriptReferenceSync(relativePath + '/client/js/libs/bootstrap/js/bootstrap.js', $),
+                createScriptReferenceSync(relativePath + '/client/bower_components/underscore/underscore.js', $),
+                createScriptReferenceSync(relativePath + '/client/bower_components/localforage/dist/localforage.js', $),
+                createScriptReferenceSync(relativePath + '/client/bower_components/bootstrap/dist/js/bootstrap.js', $),
                 createScriptReferenceSync(relativePath + '/client/js/libs/jquery.format-1.2/jquery.format-1.2.js', $),
                 createScriptReferenceSync(relativePath + '/socket.io/socket.io.js', $)
             ).then(function () {
                 $.when(
-                    createScriptReferenceSync(relativePath + '/client/js/libs/backbone/backbone.js', $),
+                    createScriptReferenceSync(relativePath + '/client/bower_components/backbone/backbone.js', $),
                     createScriptReferenceSync(relativePath + '/client/js/libs/datejs/date-pt-BR.js', $)
                 ).then(function () {
                     $.when(
-                        createScriptReferenceSync(relativePath + '/client/js/libs/backbone/backbone.viewOptions.js', $)
+                        createScriptReferenceSync(relativePath + '/client/bower_components/backbone.viewOptions/backbone.viewOptions.js', $)
                     ).then(function () {
+
+						/* app */
+
                         $.when(
                             createScriptReferenceSync(relativePath + '/client/js/views/chat/mailslot.js', $)
                         ).then(function () {
