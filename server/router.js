@@ -1,6 +1,4 @@
-﻿var authorize = require('./authentication/authorize'),
-
-	signup = require('./routes/signup'),
+﻿var signup = require('./routes/signup'),
 	login = require('./routes/login'),
 	logout = require('./routes/logout');
 

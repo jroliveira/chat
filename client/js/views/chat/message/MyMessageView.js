@@ -1,9 +1,9 @@
-MyMessageView = MessageView.extend({
+chatApp.views.chat.message.MyMessageView = chatApp.views.chat.message.MessageView.extend({
 
     className: 'right clearfix',
 
     initialize: function () {
-    	this.template = templates.get('chat/my-message');
+    	this.template = chatApp.infraestructure.templates.get('chat/my-message');
 
         var self = this;
         localforage.ready(function () {

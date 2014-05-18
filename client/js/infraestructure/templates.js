@@ -1,4 +1,4 @@
-﻿templates = {
+﻿chatApp.infraestructure.templates = {
 
 	loaded: {},
 

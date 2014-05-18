@@ -1,11 +1,11 @@
-AlertView = Backbone.View.extend({
+chatApp.views.AlertView = Backbone.View.extend({
 
 	options: ['type', 'message'],
 
 	initialize: function (options) {
 		this.setOptions(options);
 
-		this.template = templates.get('alert');
+		this.template = chatApp.infraestructure.templates.get('alert');
 
 		this.$el.find('div.alert').remove();
 	},

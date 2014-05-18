@@ -1,7 +1,7 @@
 ﻿(function () {
     var jQuery,
-        //relativePath = 'http://widget-chat.herokuapp.com';
-        relativePath = 'http://localhost:4000';
+        relativePath = 'http://widget-chat.herokuapp.com';
+        //relativePath = 'http://localhost:4000';
     
     if (window.jQuery === undefined || window.jQuery.fn.jquery !== '2.1.1') {
     	createScriptReferenceAsync(relativePath + '/client/bower_components/jquery/dist/jquery.js', function () {
@@ -79,26 +79,32 @@
 						/* app */
 
                     	$.when(
-                    		createScriptReferenceSync(relativePath + '/client/js/infraestructure/templates.js', $),
-                            createScriptReferenceSync(relativePath + '/client/js/views/chat/mailslot.js', $)
+                            createScriptReferenceSync(relativePath + '/client/js/project.js', $)
                         ).then(function () {
                         	$.when(
-                        		createScriptReferenceSync(relativePath + '/client/js/views/AlertView.js', $),
-								createScriptReferenceSync(relativePath + '/client/js/views/login/LoginView.js', $),
-                                createScriptReferenceSync(relativePath + '/client/js/views/chat/message/MessageView.js', $),
-                                createScriptReferenceSync(relativePath + '/client/js/views/chat/ChatView.js', $)
-                            ).then(function () {
-                                $.when(
-                                    createScriptReferenceSync(relativePath + '/client/js/views/chat/message/FriendMessageView.js', $),
-                                    createScriptReferenceSync(relativePath + '/client/js/views/chat/message/MyMessageView.js', $)
-                                ).then(function () {
-                                    $.when(
-                                        createScriptReferenceSync(relativePath + '/client/js/app.js', $)
-                                    ).then(function () {
-                                        defer.resolve();
-                                    });
-                                });
-                            });
+                    			createScriptReferenceSync(relativePath + '/client/js/infraestructure/templates.js', $),
+								createScriptReferenceSync(relativePath + '/client/js/services/mailslot.js', $),
+								createScriptReferenceSync(relativePath + '/client/js/server.js', $),
+                        		createScriptReferenceSync(relativePath + '/client/js/router.js', $)
+							).then(function () {
+                        		$.when(
+                        			createScriptReferenceSync(relativePath + '/client/js/views/AlertView.js', $),
+									createScriptReferenceSync(relativePath + '/client/js/views/login/LoginView.js', $),
+									createScriptReferenceSync(relativePath + '/client/js/views/chat/message/MessageView.js', $),
+									createScriptReferenceSync(relativePath + '/client/js/views/chat/ChatView.js', $)
+								).then(function () {
+                            		$.when(
+										createScriptReferenceSync(relativePath + '/client/js/views/chat/message/FriendMessageView.js', $),
+										createScriptReferenceSync(relativePath + '/client/js/views/chat/message/MyMessageView.js', $)
+									).then(function () {
+                                		$.when(
+											createScriptReferenceSync(relativePath + '/client/js/app.js', $)
+										).then(function () {
+                                    		defer.resolve();
+										});
+									});
+								});
+							});
                         });
                     });
                 });

@@ -1,4 +1,4 @@
-LoginView = Backbone.View.extend({
+chatApp.views.login.LoginView = Backbone.View.extend({
 
 	events: {
 		'click #submit': 'submit',
@@ -6,7 +6,7 @@ LoginView = Backbone.View.extend({
 	},
 
 	initialize: function () {
-		this.template = templates.get('login/login');
+		this.template = chatApp.infraestructure.templates.get('login/login');
 	},
 
 	render: function () {
@@ -36,11 +36,11 @@ LoginView = Backbone.View.extend({
 			crossDomain: true,
 			success: function (data) {
 				if (!data.success) {
-					var alert = new AlertView({ type: data.type, message: data.message, el: $('.panel-body') });
+					var alert = new chatApp.views.AlertView({ type: data.type, message: data.message, el: $('.panel-body') });
 					return alert.render();
 				}
 				
-				$(document).trigger('changeView', [ChatView]);
+				$(document).trigger('chatRoute');
 			},
 			error: function (err) {
 				console.log(err);

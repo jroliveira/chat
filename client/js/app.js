@@ -1,40 +1,33 @@
-Backbone.View.prototype.close = function () {
-    this.remove();
-    this.unbind();
-    if (this.onClose) {
-        this.onClose();
-    }
-};
+chatApp.app = function () {
 
-Backbone.ViewOptions.add(Backbone.View.prototype);
+	Backbone.View.prototype.close = function () {
+		this.remove();
+		this.unbind();
+		if (this.onClose) {
+			this.onClose();
+		}
+	};
 
-localforage.config({
-    name: 'chat',
-    storeName: 'messages',
-    description: 'unsent messages'
-});
+	Backbone.ViewOptions.add(Backbone.View.prototype);
 
-var view;
+	localforage.config({
+		name: 'chat',
+		storeName: 'messages',
+		description: 'unsent messages'
+	});
 
-$(document).on('changeView', function (event, View) {
-	if (view) view.close();
+	chatApp.infraestructure.templates.load([
+		'chat/chat',
+		'chat/friend-message',
+		'chat/my-message',
 
-	view = new View;
+		'login/login',
 
-	var content = view.render();
-	$('.chat').html(content.el);
-});
+		'alert'
+	], function () {
 
-templates.load([
-	'chat/chat', 
-	'chat/friend-message',
-	'chat/my-message',
+		$(document).trigger('loginRoute');
 
-	'login/login',
-		
-	'alert'
-], function () {
+	});
 
-	$(document).trigger('changeView', [LoginView]);
-	
-});
+}();

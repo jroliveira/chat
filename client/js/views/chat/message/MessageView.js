@@ -1,4 +1,4 @@
-MessageView = Backbone.View.extend({
+chatApp.views.chat.message.MessageView = Backbone.View.extend({
 
     tagName: 'li',
         
