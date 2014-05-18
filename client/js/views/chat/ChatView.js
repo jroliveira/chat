@@ -1,27 +1,23 @@
 ChatView = Backbone.View.extend({
 
-    el: $('.chat'),
-
-    options: ['socket'],
-
     events: {
         'click #send': 'send',
         'keypress #message': 'enter',
         'click .panel-primary > .panel-heading': 'toggle'
     },
 
-    initialize: function (options) {
-        this.setOptions(options);
+    initialize: function () {
+    	this.template = templates.get('chat/chat');
     },
 
     render: function () {
-        var self = this,
-            relativePath = $('#relativePath').val(),
-            template = $('#chatTemplate').html();
-        
-        this.$el.html(template);
+    	var self = this;
+	    
+        this.$el.html(this.template);
 
-        var socket = io.connect(relativePath);
+
+        var relativePath = $('#relativePath').val(),
+	        socket = io.connect(relativePath);
 
         mailslot.initialize(socket);
 
@@ -96,15 +92,16 @@ ChatView = Backbone.View.extend({
     },
 
     showStatus: function (connected, message) {
-        if (connected) {
-            $('.chat > .panel').removeClass('panel-danger');
-            $('.chat > .panel').addClass('panel-primary');
+    	if (connected) {
+    		$('.chat > div > .panel').removeClass('panel-default');
+    		$('.chat > div > .panel').removeClass('panel-danger');
+    		$('.chat > div > .panel').addClass('panel-primary');
         } else {
-            $('.chat > .panel').removeClass('panel-primary');
-            $('.chat > .panel').addClass('panel-danger');
+    		$('.chat > div > .panel').removeClass('panel-primary');
+    		$('.chat > div > .panel').addClass('panel-danger');
         }
             
-        $('.chat > .panel > .panel-heading > small').html(message);
+    	$('.chat > div > .panel > .panel-heading > small').html(message);
     },
 
     showMessage: function (messageView) {
@@ -138,7 +135,7 @@ ChatView = Backbone.View.extend({
     },
 
     toggle: function (e) {
-        $('.chat > .panel > .panel-body, .chat > .panel > .panel-footer').toggle();
+    	$('.chat > div >  .panel > .panel-body, .chat > div > .panel > .panel-footer').toggle();
     }
 
 });

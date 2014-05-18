@@ -19,13 +19,9 @@
             var widgetType = $('.widget-container').attr('data-type');
             if (widgetType !== 'chat') return;
 
-            var email = $('.widget-container').attr('data-email'),
-                password = $('.widget-container').attr('data-password');
-
             $.ajax({
-                type: 'POST',
-                url: relativePath + '/bate-papo',
-                data: { email: email, password: password },
+                type: 'GET',
+                url: relativePath + '/entrar',
                 xhrFields: {
                     withCredentials: true
                 },
@@ -82,10 +78,13 @@
 
 						/* app */
 
-                        $.when(
+                    	$.when(
+                    		createScriptReferenceSync(relativePath + '/client/js/infraestructure/templates.js', $),
                             createScriptReferenceSync(relativePath + '/client/js/views/chat/mailslot.js', $)
                         ).then(function () {
-                            $.when(
+                        	$.when(
+                        		createScriptReferenceSync(relativePath + '/client/js/views/AlertView.js', $),
+								createScriptReferenceSync(relativePath + '/client/js/views/login/LoginView.js', $),
                                 createScriptReferenceSync(relativePath + '/client/js/views/chat/message/MessageView.js', $),
                                 createScriptReferenceSync(relativePath + '/client/js/views/chat/ChatView.js', $)
                             ).then(function () {

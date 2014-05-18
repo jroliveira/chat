@@ -8,21 +8,33 @@ Backbone.View.prototype.close = function () {
 
 Backbone.ViewOptions.add(Backbone.View.prototype);
 
-_.each(["Model", "Collection"], function(name) {
-    var ctor = Backbone[name];
-    var fetch = ctor.prototype.fetch;
-    ctor.prototype.fetch = function() {
-        $('article').html(templateLoading);
-        this.trigger("fetch", this);
-        return fetch.apply(this, arguments);
-    };
-});
-
 localforage.config({
     name: 'chat',
     storeName: 'messages',
     description: 'unsent messages'
 });
 
-var chatView = new ChatView();
-chatView.render();
+var view;
+
+$(document).on('changeView', function (event, View) {
+	if (view) view.close();
+
+	view = new View;
+
+	var content = view.render();
+	$('.chat').html(content.el);
+});
+
+templates.load([
+	'chat/chat', 
+	'chat/friend-message',
+	'chat/my-message',
+
+	'login/login',
+		
+	'alert'
+], function () {
+
+	$(document).trigger('changeView', [LoginView]);
+	
+});

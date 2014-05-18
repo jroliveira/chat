@@ -3,7 +3,7 @@ MyMessageView = MessageView.extend({
     className: 'right clearfix',
 
     initialize: function () {
-        this.template = $('#myMessageTemplate').html();
+    	this.template = templates.get('chat/my-message');
 
         var self = this;
         localforage.ready(function () {
