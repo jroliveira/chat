@@ -22,6 +22,8 @@ chatApp.app = function () {
 		'chat/my-message',
 
 		'login/login',
+	    
+        'signup/signup',
 
 		'alert'
 	], function () {

@@ -21,7 +21,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: relativePath + '/entrar',
+                url: relativePath + '/',
                 xhrFields: {
                     withCredentials: true
                 },
@@ -90,6 +90,7 @@
                         		$.when(
                         			createScriptReferenceSync(relativePath + '/client/js/views/AlertView.js', $),
 									createScriptReferenceSync(relativePath + '/client/js/views/login/LoginView.js', $),
+                        		    createScriptReferenceSync(relativePath + '/client/js/views/signup/SignupView.js', $),
 									createScriptReferenceSync(relativePath + '/client/js/views/chat/message/MessageView.js', $),
 									createScriptReferenceSync(relativePath + '/client/js/views/chat/ChatView.js', $)
 								).then(function () {

@@ -1,23 +1,26 @@
 ﻿/* app */
 var chatApp = chatApp || {
 
-	/* services */
-	services: {},
+    /* services */
+    services: {},
 
-	/* infraestructure */
-	infraestructure: {},
+    /* infraestructure */
+    infraestructure: {},
 
-	/* views */
-	views: {
+    /* views */
+    views: {
 
-		/* chat */
-		chat: {
-			message: {}
-		},
+        /* chat */
+        chat: {
+            message: {}
+        },
 
-		/* login */
-		login: {}
+        /* login */
+        login: {},
 
-	}
+        /* signup */
+        signup: {}
+
+    }
 
 };

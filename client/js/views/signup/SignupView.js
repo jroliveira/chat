@@ -1,13 +1,13 @@
-chatApp.views.login.LoginView = Backbone.View.extend({
+chatApp.views.signup.SignupView = Backbone.View.extend({
 
 	events: {
 	    'click #submit': 'submit',
-	    'click #signup': 'signup',
-		'keypress #password': 'enter'
+	    'click #back': 'back',
+	    'keypress #confirmPassword': 'enter'
 	},
 
 	initialize: function () {
-		this.template = chatApp.infraestructure.templates.get('login/login');
+	    this.template = chatApp.infraestructure.templates.get('signup/signup');
 	},
 
 	render: function () {
@@ -20,10 +20,10 @@ chatApp.views.login.LoginView = Backbone.View.extend({
 		if (e.keyCode === 13) this.submit(e);
 	},
 	
-	signup: function (e) {
+	back: function (e) {
 	    e.preventDefault();
 	    
-	    $(document).trigger('signupRoute');
+	    $(document).trigger('loginRoute');
 	},
 
 	submit: function (e) {
@@ -31,23 +31,20 @@ chatApp.views.login.LoginView = Backbone.View.extend({
 
 		var email = $('#email').val(),
 		    password = $('#password').val(),
+		    confirmPassword = $('#confirmPassword').val(),
 		    relativePath = $('#relativePath').val();
 
 		$.ajax({
 			type: 'POST',
-			url: relativePath + '/api/entrar',
-			data: { email: email, password: password },
+			url: relativePath + '/api/criar-conta',
+			data: { email: email, password: password, confirmPassword: confirmPassword },
 			xhrFields: {
 				withCredentials: true
 			},
 			crossDomain: true,
 			success: function (data) {
-				if (!data.success) {
-					var alert = new chatApp.views.AlertView({ type: data.type, message: data.message, el: $('.panel-body') });
-					return alert.render();
-				}
-				
-				$(document).trigger('chatRoute');
+			    var alert = new chatApp.views.AlertView({ type: data.type, message: data.message, el: $('.panel-body') });
+			    alert.render();
 			},
 			error: function (err) {
 				console.log(err);

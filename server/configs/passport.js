@@ -14,34 +14,6 @@ module.exports = function () {
         });
     });
 
-    passport.use('local-signup', new passportLocal.Strategy({
-        usernameField: 'email',
-        passwordField: 'password',
-        passReqToCallback: true
-    },
-    function (req, email, password, done) {
-        Account.findOne({ 'email': email }, function (err, account) {
-            if (err) return done(err);
-
-            if (account)
-                return done(null, false, req.flash('signupMessage', 'Este e-mail já esta cadastrado'));
-
-            var newAccount = new Account();
-
-            if (!newAccount.validEmail(email))
-                return done(null, false, req.flash('signupMessage', 'O e-mail não é válido'));
-
-            newAccount.email = email;
-            newAccount.password = newAccount.generateHash(password);
-
-            newAccount.save(function (err) {
-                if (err) throw err;
-
-                return done(null, newAccount, req.flash('loginMessage', { message: 'Conta criada com sucesso', type: 'alert alert-success' }));
-            });
-        });
-    }));
-
     passport.use('local-login', new passportLocal.Strategy({
         usernameField: 'email',
         passwordField: 'password',

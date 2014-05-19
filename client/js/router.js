@@ -26,5 +26,9 @@
 	$(document).on('loginRoute', function (event) {
 		changeView(chatApp.views.login.LoginView, null);
 	});
+    
+	$(document).on('signupRoute', function (event) {
+	    changeView(chatApp.views.signup.SignupView, null);
+	});
 
 }();

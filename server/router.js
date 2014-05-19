@@ -1,15 +1,17 @@
-﻿var signup = require('./routes/signup'),
-	login = require('./routes/login'),
-	logout = require('./routes/logout');
+﻿var signup = require('./routes/api/signup'),
+	login = require('./routes/api/login'),
+	logout = require('./routes/api/logout'),
+    
+    home = require('./routes/home');
 
 module.exports = function (app) {
 
-	app.get('/criar-conta', login.get);
-	app.post('/criar-conta', signup.post);
-
-	app.get('/entrar', login.get);
-	app.post('/entrar', login.post);
+    app.get('/', home.get);
+    
+    /* api */
 	
-	app.get('/sair', logout.get);
+    app.post('/api/sair', logout.post);
+    app.post('/api/entrar', login.post);
+	app.post('/api/criar-conta', signup.post);
 
 };
