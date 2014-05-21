@@ -91,3 +91,7 @@
 .navmenu-brand {
 	padding: 5px 15px;
 }
+
+.navmenu-nav > li > a {
+    border-radius: 0px;
+}

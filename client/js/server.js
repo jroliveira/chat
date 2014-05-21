@@ -27,12 +27,14 @@
 	});
 
 	socket.on('connect', function () {
-		var room = { current: '1' };
+		var room = { current: 'global' };
 		socket.emit('room', room);
 
-		socket.on('connected', function () {
-			view.showStatus(true, 'conectado');
-			$(document).trigger('socketConnected', [true]);
+		socket.on('connected', function (rooms) {
+		    view.showStatus(true, 'conectado');
+		    $(document).trigger('socketConnected', [true]);
+
+		    view.fetchRooms(rooms);
 		});
 
 		socket.on('new user', function (message) {

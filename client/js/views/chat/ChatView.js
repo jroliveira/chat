@@ -6,7 +6,7 @@ chatApp.views.chat.ChatView = Backbone.View.extend({
     },
 
     initialize: function () {
-    	this.template = chatApp.infraestructure.templates.get('chat/chat');
+        this.template = chatApp.infraestructure.templates.get('chat/chat');
     },
 
     render: function () {
@@ -16,16 +16,16 @@ chatApp.views.chat.ChatView = Backbone.View.extend({
     },
 
     showStatus: function (connected, message) {
-    	if (connected) {
-    		$('.navemenu-offcanvas > .panel').removeClass('navemenu-offcanvas-default');
-    		$('.navemenu-offcanvas > .panel').removeClass('navemenu-offcanvas-danger');
-    		$('.navemenu-offcanvas > .panel').addClass('navemenu-offcanvas-primary');
+        if (connected) {
+            $('.navemenu-offcanvas > .panel').removeClass('navemenu-offcanvas-default');
+            $('.navemenu-offcanvas > .panel').removeClass('navemenu-offcanvas-danger');
+            $('.navemenu-offcanvas > .panel').addClass('navemenu-offcanvas-primary');
         } else {
-    		$('.navemenu-offcanvas > .panel').removeClass('navemenu-offcanvas-primary');
-    		$('.navemenu-offcanvas > .panel').addClass('navemenu-offcanvas-danger');
+            $('.navemenu-offcanvas > .panel').removeClass('navemenu-offcanvas-primary');
+            $('.navemenu-offcanvas > .panel').addClass('navemenu-offcanvas-danger');
         }
-            
-    	$('.navemenu-offcanvas > .panel > .panel-heading small').html(message);
+
+        $('.navemenu-offcanvas > .panel > .panel-heading small').html(message);
     },
 
     showMessage: function (messageView) {
@@ -34,16 +34,36 @@ chatApp.views.chat.ChatView = Backbone.View.extend({
 
         $('.panel-body').animate({ scrollTop: $('#messages').height() }, 1000);
     },
-	
-	markAsSent: function(message) {
-		var date = $.format.date(new Date(message.date), "dd/MM HH:mm");
-		$('#' + message.id + ' > .date').html(date);
-		$('#' + message.id + ' > .icon').removeClass('glyphicon-time');
-		$('#' + message.id + ' > .icon').addClass('glyphicon-ok');
-	},
+
+    markAsSent: function (message) {
+        var date = $.format.date(new Date(message.date), "dd/MM HH:mm");
+        $('#' + message.id + ' > .date').html(date);
+        $('#' + message.id + ' > .icon').removeClass('glyphicon-time');
+        $('#' + message.id + ' > .icon').addClass('glyphicon-ok');
+    },
 
     partGuid: function () {
         return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    },
+
+    fetchRooms: function (rooms) {
+        var $ul = $('#rooms');
+        $ul.empty();
+
+        rooms.forEach(function (room) {
+            $ul.append(
+                '<li class="active">' +
+                    '<a href="#">' +
+                        '<span class="badge pull-right">' + room.clients.length + '</span>' +
+                        room.name.toUpperCase() +
+                    '</a>' +
+                '</li>'
+            );
+            
+            room.clients.forEach(function (client) {
+                $ul.append('<li><a href="#">' + client.email + '</a></li>');
+            });
+        });
     },
 
     enter: function (e) {
