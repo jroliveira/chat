@@ -1,17 +1,30 @@
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<span class="glyphicon glyphicon-comment"></span>&nbsp; Bate-papo <small class="chat-status badge pull-right" style="margin-top: 2px;">...</small>
-	</div>
-	<div class="panel-body">
-		<ul id="messages" class="messages">
-		</ul>
-	</div>
-	<div class="panel-footer">
-		<div class="input-group">
-			<input id="message" type="text" class="form-control input-sm" placeholder="Digite sua mensagem aqui..." />
-			<span class="input-group-btn">
-				<button id="send" class="btn btn-warning btn-sm">enviar</button>
-			</span>
+<div class="navemenu-offcanvas">
+	<div id="container" class="panel navemenu-offcanvas-default">
+		<nav id="menu" class="navmenu navmenu-default navmenu-fixed-left offcanvas" role="navigation">
+			<a class="navmenu-brand" href="#">Salas</a>
+			<ul class="nav navmenu-nav">
+				<li class="active"><a href="#">Home</a></li>
+				<li><a href="#">Link</a></li>
+				<li><a href="#">Link</a></li>
+			</ul>
+		</nav>
+		<div class="navbar navbar-default navbar-fixed-top panel-heading">
+			<button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target="#menu" data-canvas="#container" data-placement="left">
+				<span class="glyphicon glyphicon-comment"></span>
+			</button>
+			<div class="chat-title">Bate-papo <small class="chat-status badge pull-right">...</small></div>
+		</div>
+		<div class="panel-body">
+			<ul id="messages" class="messages">
+			</ul>
+		</div>
+		<div class="panel-footer">
+			<div class="input-group">
+				<input id="message" type="text" class="form-control input-sm" placeholder="Digite sua mensagem aqui..." />
+				<span class="input-group-btn">
+					<button id="send" class="btn btn-warning btn-sm">enviar</button>
+				</span>
+			</div>
 		</div>
 	</div>
 </div>

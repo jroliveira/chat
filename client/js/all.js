@@ -45,7 +45,9 @@
         
         $.when(
             createStyleReferenceSync(relativePath + '/client/bower_components/bootstrap/dist/css/bootstrap.css', $),
-            createStyleReferenceSync(relativePath + '/client/css/chat.css', $)
+			createStyleReferenceSync(relativePath + '/client/bower_components/jasny-bootstrap/dist/css/jasny-bootstrap.css', $),
+            createStyleReferenceSync(relativePath + '/client/css/chat.css', $),
+	        createStyleReferenceSync(relativePath + '/client/css/offcanvas.css', $)
         ).then(function() {
             defer.resolve();
         });
@@ -68,7 +70,8 @@
                 createScriptReferenceSync(relativePath + '/client/js/libs/jquery.format-1.2/jquery.format-1.2.js', $),
                 createScriptReferenceSync(relativePath + '/socket.io/socket.io.js', $)
             ).then(function () {
-                $.when(
+            	$.when(
+					createScriptReferenceSync(relativePath + '/client/bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.js', $),
                     createScriptReferenceSync(relativePath + '/client/bower_components/backbone/backbone.js', $),
                     createScriptReferenceSync(relativePath + '/client/js/libs/datejs/date-pt-BR.js', $)
                 ).then(function () {

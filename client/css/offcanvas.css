@@ -1,0 +1,93 @@
+﻿.navemenu-offcanvas {
+	position: relative;
+	overflow: hidden;
+	border: 1px solid #DDDDDD;
+}
+
+	.navemenu-offcanvas .panel {
+		border: none;
+	}
+
+	.navemenu-offcanvas .panel-body {
+		max-height: 300px;
+		padding: 50px 0px 0px 0px;
+	}
+
+	.navemenu-offcanvas .panel-heading {
+		padding: 0px;
+		border-top-right-radius: 0px;
+		border-top-left-radius: 0px;
+		padding: 0px !important;
+	}
+
+	.navemenu-offcanvas .navemenu-offcanvas-primary > .panel-heading {
+		color: #fff;
+		background-color: #428bca;
+		border-color: #428bca;
+	}
+
+	.navemenu-offcanvas .navemenu-offcanvas-danger > .panel-heading {
+		color: #a94442;
+		background-color: #f2dede;
+		border-color: #ebccd1;
+	}
+
+	.navemenu-offcanvas .navemenu-offcanvas-default > .panel-heading {
+		color: #333;
+		background-color: #f5f5f5;
+		border-color: #ddd;
+	}
+
+	.navemenu-offcanvas > div {
+		position: relative;
+	}
+
+	.navemenu-offcanvas .navbar-toggle {
+		float: left;
+		margin-left: 10px;
+		display: block;
+	}
+
+	.navemenu-offcanvas .navmenu-fixed-left {
+		-webkit-transform: translate(-200px, 0);
+		transform: translate(-200px, 0);
+	}
+
+	.navemenu-offcanvas .navmenu-fixed-left,
+	.navemenu-offcanvas .navbar-fixed-top,
+	.bs-navmenu-fixed-example .navmenu-fixed-left {
+		position: absolute;
+		z-index: 1;
+	}
+
+.navbar {
+	background: none;
+	width: 100%;
+	left: auto;
+	right: auto;
+}
+
+.navbar-toggle {
+	float: left;
+	margin-left: 15px;
+	padding: 5px 8px 4px 8px;
+}
+
+@media (min-width: 0) {
+	.navbar-toggle {
+		display: block;
+	}
+}
+
+.navmenu, .navbar-offcanvas {
+	width: 200px;
+}
+
+	.navmenu-fixed-left,
+	.navbar-offcanvas.navmenu-fixed-left {
+		left: auto;
+	}
+
+.navmenu-brand {
+	padding: 5px 15px;
+}

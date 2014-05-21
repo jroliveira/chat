@@ -2,8 +2,7 @@ chatApp.views.chat.ChatView = Backbone.View.extend({
 
     events: {
         'click #send': 'send',
-        'keypress #message': 'enter',
-        'click .panel-primary > .panel-heading': 'toggle'
+        'keypress #message': 'enter'
     },
 
     initialize: function () {
@@ -18,15 +17,15 @@ chatApp.views.chat.ChatView = Backbone.View.extend({
 
     showStatus: function (connected, message) {
     	if (connected) {
-    		$('.chat > div > .panel').removeClass('panel-default');
-    		$('.chat > div > .panel').removeClass('panel-danger');
-    		$('.chat > div > .panel').addClass('panel-primary');
+    		$('.navemenu-offcanvas > .panel').removeClass('navemenu-offcanvas-default');
+    		$('.navemenu-offcanvas > .panel').removeClass('navemenu-offcanvas-danger');
+    		$('.navemenu-offcanvas > .panel').addClass('navemenu-offcanvas-primary');
         } else {
-    		$('.chat > div > .panel').removeClass('panel-primary');
-    		$('.chat > div > .panel').addClass('panel-danger');
+    		$('.navemenu-offcanvas > .panel').removeClass('navemenu-offcanvas-primary');
+    		$('.navemenu-offcanvas > .panel').addClass('navemenu-offcanvas-danger');
         }
             
-    	$('.chat > div > .panel > .panel-heading > small').html(message);
+    	$('.navemenu-offcanvas > .panel > .panel-heading small').html(message);
     },
 
     showMessage: function (messageView) {
@@ -64,10 +63,6 @@ chatApp.views.chat.ChatView = Backbone.View.extend({
         this.showMessage(messageView);
 
         $message.val('');
-    },
-
-    toggle: function (e) {
-    	$('.chat > div >  .panel > .panel-body, .chat > div > .panel > .panel-footer').toggle();
     }
 
 });
