@@ -9,11 +9,14 @@
 			<button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target="#chatRooms" data-canvas="#chatContainer" data-placement="left">
 				<span class="glyphicon glyphicon-comment"></span>
 			</button>
-			<div class="chat-title">Bate-papo <small class="chat-status badge pull-right">...</small></div>
+			<div class="chat-title">Bate-papo <small class="badge pull-right">...</small></div>
 		</div>
 		<div class="panel-body">
-			<ul id="messages" class="messages">
-			</ul>
+			<div class="chat-status chat-disconnected"></div>
+			<div class="chat-content">
+				<ul id="messages" class="messages">
+				</ul>
+			</div>
 		</div>
 		<div class="panel-footer">
 			<div class="input-group">

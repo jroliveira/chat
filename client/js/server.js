@@ -7,11 +7,11 @@
 	});
 
 	socket.on('connecting', function () {
-		view.showStatus(false, 'aguarde, conectando...');
+		view.showStatus(false, 'conectando...');
 	});
 
 	socket.on('connect_failed', function () {
-		view.showStatus(false, 'falha ao conectar');
+		view.showStatus(false, 'falha, conectar');
 	});
 
 	socket.on('reconnect', function () {
@@ -19,11 +19,11 @@
 	});
 
 	socket.on('reconnecting', function () {
-		view.showStatus(false, 'aguarde, reconectando...');
+		view.showStatus(false, 'reconectando...');
 	});
 
 	socket.on('reconnect_failed', function () {
-		view.showStatus(false, 'falha ao reconectar');
+		view.showStatus(false, 'falha, reconectar');
 	});
 
 	socket.on('connect', function () {
@@ -38,13 +38,11 @@
 		});
 
 		socket.on('new user', function (message) {
-			var messageView = new chatApp.views.chat.message.FriendMessageView({ model: message });
-			view.showMessage(messageView);
+			view.newUser(message);
 		});
 
 		socket.on('user left', function (message) {
-			var messageView = new chatApp.views.chat.message.FriendMessageView({ model: message });
-			view.showMessage(messageView);
+			view.userLeft(message);
 		});
 
 		socket.on('new message', function (message) {

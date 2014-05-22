@@ -99,7 +99,9 @@
 								).then(function () {
                             		$.when(
 										createScriptReferenceSync(relativePath + '/client/js/views/chat/message/FriendMessageView.js', $),
-										createScriptReferenceSync(relativePath + '/client/js/views/chat/message/MyMessageView.js', $)
+										createScriptReferenceSync(relativePath + '/client/js/views/chat/message/MyMessageView.js', $),
+                            			createScriptReferenceSync(relativePath + '/client/js/views/chat/message/NewUserMessageView.js', $),
+                            			createScriptReferenceSync(relativePath + '/client/js/views/chat/message/UserLeftMessageView.js', $)
 									).then(function () {
                                 		$.when(
 											createScriptReferenceSync(relativePath + '/client/js/app.js', $)

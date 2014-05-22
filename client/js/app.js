@@ -20,6 +20,8 @@ chatApp.app = function () {
 		'chat/chat',
 		'chat/friend-message',
 		'chat/my-message',
+		'chat/newuser-message',
+		'chat/userleft-message',
 
 		'login/login',
 	    
