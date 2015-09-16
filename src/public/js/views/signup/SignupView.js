@@ -32,11 +32,11 @@ chatApp.views.signup.SignupView = Backbone.View.extend({
 		var email = $('#email').val(),
 		    password = $('#password').val(),
 		    confirmPassword = $('#confirmPassword').val(),
-		    relativePath = $('#relativePath').val();
+		    relativePathApi = $('#relativePathApi').val();
 
 		$.ajax({
 			type: 'POST',
-			url: relativePath + '/api/criar-conta',
+			url: relativePathApi + '/criar-conta',
 			data: { email: email, password: password, confirmPassword: confirmPassword },
 			xhrFields: {
 				withCredentials: true

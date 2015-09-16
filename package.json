@@ -1,29 +1,22 @@
 {
   "name": "chat",
   "version": "0.0.1",
-  "description": "Chat",
-  "homepage": "http://widget-chat.herokuapp.com",
+  "description": "chat",
+  "homepage": "",
   "repository": {
     "type": "git",
     "url": "https://github.com/junioro/chat.git"
   },
-  "dependencies": {
-    "consolidate": "0.9.x",
-    "underscore": "1.4.4",
-    "express": "3.4.4",
-    "mongoose": "3.8.4",
-    "mongodb": "1.3.23",
-    "swig": "1.3.2",
-    "socket.io": "0.9.16",
-    "bcrypt-nodejs": "0.0.3",
-    "passport": "0.2.0",
-    "passport-local": "1.0.0",
-    "connect-flash": "0.1.1",
-    "marinet-provider-nodejs": "0.0.1",
-    "bower": "1.3.3"
+  "engines": {
+    "node": ">=0.11.14"
   },
-
   "scripts": {
+    "start": "node --harmony src/app.js",
     "postinstall": "./node_modules/bower/bin/bower install"
+  },
+  "dependencies": {
+    "express": "3.4.4",
+    "swig": "1.3.2",
+    "bower": "1.5.2"
   }
 }

@@ -9,7 +9,7 @@
 			var name = names[index],
 				relativePath = $('#relativePath').val();
 
-			$.get(relativePath + '/client/js/templates/' + name + '.html', function (data) {
+			$.get(relativePath + '/public/js/templates/' + name + '.html', function (data) {
 				self.loaded[name] = data;
 
 				index++;

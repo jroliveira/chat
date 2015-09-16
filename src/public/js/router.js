@@ -13,8 +13,8 @@
 	}
 
 	$(document).on('chatRoute', function (event) {
-		var relativePath = $('#relativePath').val(),
-			socket = io.connect(relativePath);
+		var relativePathApi = $('#relativePathApi').val(),
+			socket = io.connect(relativePathApi);
 
 		chatApp.services.mailslot.initialize(socket);
 
