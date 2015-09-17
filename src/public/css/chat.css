@@ -1,121 +1,121 @@
 form {
-	margin: 25px 20px;
+  margin: 25px 20px;
 }
 
 .chat {
-	width: 285px;
-	bottom: 0px;
-	position: absolute;
+  width: 285px;
+  bottom: 0px;
+  position: absolute;
 }
 
-	.chat .panel {
-		margin-bottom: 0px;
-		border-radius: 0px;
-		border: 1px solid #DDDDDD;
-	}
+.chat .panel {
+  margin-bottom: 0px;
+  border-radius: 0px;
+  border: 1px solid #DDDDDD;
+}
 
-		.chat .panel .panel-heading {
-			border-top-left-radius: 0px;
-			border-top-right-radius: 0px;
-			height: 50px;
-			padding: 15px;
-		}
+.chat .panel .panel-heading {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  height: 50px;
+  padding: 15px;
+}
 
-			.chat .panel .panel-heading .badge {
-				margin: 2px 10px 0px 0px;
-			}
+.chat .panel .panel-heading .badge {
+  margin: 2px 10px 0px 0px;
+}
 
-		.chat .panel .panel-body .chat-content {
-			overflow-y: auto;
-			height: 100%;
-		}
+.chat .panel .panel-body .chat-content {
+  overflow-y: auto;
+  height: 100%;
+}
 
-		.chat .panel .panel-footer {
-			height: 50px;
-		}
+.chat .panel .panel-footer {
+  height: 50px;
+}
 
 .chat-status {
-	border-style: solid;
-	border-width: 2px;
+  border-style: solid;
+  border-width: 2px;
 }
 
-	.chat-status.chat-connected {
-		border-color: #3c763d;
-	}
+.chat-status.chat-connected {
+  border-color: #3c763d;
+}
 
-	.chat-status.chat-disconnected {
-		border-color: #a94442;
-	}
-
-.chat-title {
-	margin-top: 15px;
+.chat-status.chat-disconnected {
+  border-color: #a94442;
 }
 
 .chat-title {
-	margin-top: 15px;
+  margin-top: 15px;
+}
+
+.chat-title {
+  margin-top: 15px;
 }
 
 .messages {
-	list-style: none;
-	margin: 0px 15px 0px 15px;
-	padding: 0;
+  list-style: none;
+  margin: 0px 15px 0px 15px;
+  padding: 0;
 }
 
-	.messages li {
-		margin: 15px 0px 15px 0px;
-		padding-bottom: 15px;
-		border-bottom: 1px dotted #B3A9A9;
-	}
+.messages li {
+  margin: 15px 0px 15px 0px;
+  padding-bottom: 15px;
+  border-bottom: 1px dotted #B3A9A9;
+}
 
-		.messages li:last-child {
-			border-bottom: none;
-		}
+.messages li:last-child {
+  border-bottom: none;
+}
 
-		.messages li.new-user {
-			height: 43px;
-			padding: 0px;
-			border-radius: 5px;
-			border: solid 1px #d6e9c6;
-			background-color: #dff0d8;
-		}
+.messages li.new-user {
+  height: 43px;
+  padding: 0px;
+  border-radius: 5px;
+  border: solid 1px #d6e9c6;
+  background-color: #dff0d8;
+}
 
-		.messages li.user-left {
-			height: 43px;
-			padding: 0px;
-			border-radius: 5px;
-			border: solid 1px #ebccd1;
-			background-color: #f2dede;
-		}
+.messages li.user-left {
+  height: 43px;
+  padding: 0px;
+  border-radius: 5px;
+  border: solid 1px #ebccd1;
+  background-color: #f2dede;
+}
 
-		.messages li.left .chat-body {
-			margin-left: 45px;
-		}
+.messages li.left .chat-body {
+  margin-left: 45px;
+}
 
-		.messages li.right .chat-body {
-			margin-right: 45px;
-		}
+.messages li.right .chat-body {
+  margin-right: 45px;
+}
 
-		.messages li .chat-body p {
-			margin: 0;
-			color: #777777;
-		}
+.messages li .chat-body p {
+  margin: 0;
+  color: #777777;
+}
 
-	.messages .glyphicon,
-	.panel .slidedown .glyphicon {
-		margin-right: 5px;
-	}
+.messages .glyphicon,
+.panel .slidedown .glyphicon {
+  margin-right: 5px;
+}
 
 ::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	background-color: #F5F5F5;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #F5F5F5;
 }
 
 ::-webkit-scrollbar {
-	width: 12px;
-	background-color: #F5F5F5;
+  width: 12px;
+  background-color: #F5F5F5;
 }
 
 ::-webkit-scrollbar-thumb {
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-	background-color: #555;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  background-color: #555;
 }

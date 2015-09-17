@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
   var jQuery;
   var relativePath = 'http://widget-chat.herokuapp.com';
   var relativePathApi = 'http://widget-chat-api.herokuapp.com';
@@ -93,17 +93,17 @@
                 createScriptReferenceSync(relativePath + '/public/js/router.js', $)
               ).then(function () {
                 $.when(
-                  createScriptReferenceSync(relativePath + '/public/js/views/AlertView.js', $),
-                  createScriptReferenceSync(relativePath + '/public/js/views/login/LoginView.js', $),
-                  createScriptReferenceSync(relativePath + '/public/js/views/signup/SignupView.js', $),
-                  createScriptReferenceSync(relativePath + '/public/js/views/chat/message/MessageView.js', $),
-                  createScriptReferenceSync(relativePath + '/public/js/views/chat/ChatView.js', $)
+                  createScriptReferenceSync(relativePath + '/public/js/views/alert.js', $),
+                  createScriptReferenceSync(relativePath + '/public/js/views/login/login.js', $),
+                  createScriptReferenceSync(relativePath + '/public/js/views/signup/signup.js', $),
+                  createScriptReferenceSync(relativePath + '/public/js/views/chat/messages/message.js', $),
+                  createScriptReferenceSync(relativePath + '/public/js/views/chat/chat.js', $)
                 ).then(function () {
                   $.when(
-                    createScriptReferenceSync(relativePath + '/public/js/views/chat/message/FriendMessageView.js', $),
-                    createScriptReferenceSync(relativePath + '/public/js/views/chat/message/MyMessageView.js', $),
-                    createScriptReferenceSync(relativePath + '/public/js/views/chat/message/NewUserMessageView.js', $),
-                    createScriptReferenceSync(relativePath + '/public/js/views/chat/message/UserLeftMessageView.js', $)
+                    createScriptReferenceSync(relativePath + '/public/js/views/chat/messages/friend.js', $),
+                    createScriptReferenceSync(relativePath + '/public/js/views/chat/messages/my.js', $),
+                    createScriptReferenceSync(relativePath + '/public/js/views/chat/messages/new-user.js', $),
+                    createScriptReferenceSync(relativePath + '/public/js/views/chat/messages/user-left.js', $)
                   ).then(function () {
                     $.when(
                       createScriptReferenceSync(relativePath + '/public/js/app.js', $)

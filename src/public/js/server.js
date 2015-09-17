@@ -1,67 +1,73 @@
-﻿chatApp.server = function (socket, view) {
+chatApp.server = function (socket, view) {
 
-	socket.on('disconnect', function () {
-		view.showStatus(false, 'desconectado');
+  socket.on('connecting', show(false, 'conectando...'));
+  socket.on('reconnecting', show(false, 'reconectando...'));
+  socket.on('connect_failed', show(false, 'falha, conectar'));
+  socket.on('reconnect_failed', show(false, 'falha, reconectar'));
+  socket.on('reconnect', show(true, 'reconectado'));
+  socket.on('disconnect', disconnect);
+  socket.on('connect', connect);
 
-		$(document).trigger('socketConnected', [false]);
-	});
+  function show(connected, message) {
+    view.showStatus(connected, message);
 
-	socket.on('connecting', function () {
-		view.showStatus(false, 'conectando...');
-	});
+    return function () {}
+  }
 
-	socket.on('connect_failed', function () {
-		view.showStatus(false, 'falha, conectar');
-	});
+  function disconnect() {
+    view.showStatus(false, 'desconectado');
 
-	socket.on('reconnect', function () {
-		view.showStatus(true, 'reconectado');
-	});
+    $(document).trigger('socketConnected', [false]);
+  }
 
-	socket.on('reconnecting', function () {
-		view.showStatus(false, 'reconectando...');
-	});
+  function connect() {
+    var room = {
+      current: 'global'
+    };
+    socket.emit('room', room);
 
-	socket.on('reconnect_failed', function () {
-		view.showStatus(false, 'falha, reconectar');
-	});
+    socket.on('connected', connected);
+    socket.on('new user', newUser);
+    socket.on('user left', userLeft);
+    socket.on('new message', newMessage);
+    socket.on('sent', sent);
+    socket.on('error', error);
 
-	socket.on('connect', function () {
-		var room = { current: 'global' };
-		socket.emit('room', room);
+    function connected(rooms) {
+      view.showStatus(true, 'conectado');
+      $(document).trigger('socketConnected', [true]);
 
-		socket.on('connected', function (rooms) {
-		    view.showStatus(true, 'conectado');
-		    $(document).trigger('socketConnected', [true]);
+      view.fetchRooms(rooms);
+    }
 
-		    view.fetchRooms(rooms);
-		});
+    function newUser(message) {
+      view.newUser(message);
+    }
 
-		socket.on('new user', function (message) {
-			view.newUser(message);
-		});
+    function userLeft(message) {
+      view.userLeft(message);
+    }
 
-		socket.on('user left', function (message) {
-			view.userLeft(message);
-		});
+    function newMessage(message) {
+      var messageView = new chatApp.views.chat.message.FriendMessageView({
+        model: message
+      });
+      view.showMessage(messageView);
+    }
 
-		socket.on('new message', function (message) {
-			var messageView = new chatApp.views.chat.message.FriendMessageView({ model: message });
-			view.showMessage(messageView);
-		});
+    function sent(message) {
+      localforage.ready(function () {
+        localforage.removeItem(message.key);
 
-		socket.on('sent', function (message) {
-			localforage.ready(function () {
-				localforage.removeItem(message.key);
+        view.markAsSent(message);
+      });
+    }
 
-				view.markAsSent(message);
-			});
-		});
-
-		socket.on('error', function (err) {
-			if (err == 'handshake unauthorized') $(document).trigger('loginRoute');
-		});
-
-	});
+    function error(err) {
+      if (err == 'handshake unauthorized') {
+        $(document).trigger('loginRoute');
+      }
+    }
+  }
 
 };

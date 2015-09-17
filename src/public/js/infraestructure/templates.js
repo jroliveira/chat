@@ -1,31 +1,33 @@
-﻿chatApp.infraestructure.templates = {
+chatApp.infraestructure.templates = {
 
-	loaded: {},
+  loaded: {},
 
-	load: function (names, callback) {
-		var self = this;
+  load: function (names, callback) {
+    var self = this;
 
-		var loadTemplate = function (index) {
-			var name = names[index],
-				relativePath = $('#relativePath').val();
+    loadTemplate(0);
 
-			$.get(relativePath + '/public/js/templates/' + name + '.html', function (data) {
-				self.loaded[name] = data;
+    function loadTemplate(index) {
+      var name = names[index];
+      var relativePath = $('#relativePath').val();
 
-				index++;
-				if (index < names.length) {
-					loadTemplate(index);
-				} else {
-					callback();
-				}
-			});
-		};
+      $.get(relativePath + '/public/js/templates/' + name + '.html', saveTemplate);
 
-		loadTemplate(0);
-	},
+      function saveTemplate(data) {
+        self.loaded[name] = data;
 
-	get: function (name) {
-		return this.loaded[name];
-	}
+        index++;
+        if (index < names.length) {
+          loadTemplate(index);
+        } else {
+          callback();
+        }
+      }
+    }
+  },
+
+  get: function (name) {
+    return this.loaded[name];
+  }
 
 };

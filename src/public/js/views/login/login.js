@@ -17,7 +17,9 @@ chatApp.views.login.LoginView = Backbone.View.extend({
   },
 
   enter: function (e) {
-    if (e.keyCode === 13) this.submit(e);
+    if (e.keyCode === 13) {
+      this.submit(e);
+    }
   },
 
   signup: function (e) {
@@ -29,30 +31,43 @@ chatApp.views.login.LoginView = Backbone.View.extend({
   submit: function (e) {
     e.preventDefault();
 
-    var email = $('#email').val(),
-		    password = $('#password').val(),
-		    relativePathApi = $('#relativePathApi').val();
+    var email = $('#email').val();
+    var password = $('#password').val();
+    var relativePathApi = $('#relativePathApi').val();
 
     $.ajax({
       type: 'POST',
       url: relativePathApi + '/entrar',
-      data: { email: email, password: password },
+      data: {
+        email: email,
+        password: password
+      },
       xhrFields: {
         withCredentials: true
       },
       crossDomain: true,
-      success: function (data) {
-        if (!data.success) {
-          var alert = new chatApp.views.AlertView({ type: data.type, message: data.message, el: $('.panel-body') });
-          return alert.render();
-        }
-
-        $(document).trigger('chatRoute');
-      },
-      error: function (err) {
-        console.log(err);
-      }
+      success: success,
+      error: error
     });
+
+    function success(data) {
+      if (data.success) {
+        $(document).trigger('chatRoute');
+        return;
+      }
+
+      var alert = new chatApp.views.AlertView({
+        type: data.type,
+        message: data.message,
+        el: $('.panel-body')
+      });
+
+      alert.render();
+    }
+
+    function error(err) {
+      console.log(err);
+    }
   }
 
 });

@@ -1,51 +1,69 @@
-﻿chatApp.services.mailslot = function () {
+chatApp.services.mailslot = function () {
 
-	var server,
-    connected = false;
+  var server;
+  var connected = false;
 
-	function verify() {
-		if (!connected) return;
+  return {
+    initialize: initialize,
+    connected: socketConnected
+  };
 
-		localforage.length(function (length) {
-			for (var i = 0; i < length; ++i) {
-				localforage.key(i, function (key) {
-					if (key != 'indexes') {
-						localforage.getItem(key, function (message) {
-							if (message.sent === 1) return;
+  function initialize(socket) {
+    $(document).on('socketConnected', $.proxy(socketConnected, this));
 
-							var newMessage = { id: message.id, msg: message.msg, key: key };
+    server = socket;
 
-							server.emit('new message', newMessage);
+    verify();
+  }
 
-							message.sent = 1;
-							localforage.removeItem(key, function () {
-								localforage.setItem(key, message);
-							});
-						});
-					}
-				});
-			}
-		});
+  function socketConnected(event, isConnected) {
+    connected = isConnected;
 
-		setTimeout(verify, 5000);
-	}
+    verify();
+  }
 
-	return {
+  function verify() {
+    if (!connected) {
+      return;
+    }
 
-		initialize: function (socket) {
-			$(document).on('socketConnected', $.proxy(this.connected, this));
+    localforage.length(getKeys);
 
-			server = socket;
+    setTimeout(verify, 5000);
+  }
 
-			verify();
-		},
+  function getKeys(length) {
+    for (var i = 0; i < length; ++i) {
+      localforage.key(i, getItem);
+    }
+  }
 
-		connected: function (event, isConnected) {
-			connected = isConnected;
+  function getItem(key) {
+    if (key == 'indexes') {
+      return;
+    }
 
-			verify();
-		}
+    localforage.getItem(key, send);
 
-	};
+    function send(message) {
+      if (message.sent === 1) {
+        return;
+      }
+
+      var newMessage = {
+        id: message.id,
+        msg: message.msg,
+        key: key
+      };
+
+      server.emit('new message', newMessage);
+
+      message.sent = 1;
+
+      localforage.removeItem(key, function () {
+        localforage.setItem(key, message);
+      });
+    }
+  }
 
 }();

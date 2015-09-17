@@ -1,34 +1,44 @@
-﻿chatApp.router = function () {
+chatApp.router = function () {
 
-	var view;
+  var view;
 
-	function changeView(View, callback) {
-		if (view) view.close();
+  function changeView(View, callback) {
+    if (view) {
+      view.close();
+    }
 
-		view = new View;
-		var content = view.render();
-		$('.chat').html(content.el);
+    view = new View;
+    var content = view.render();
+    $('.chat').html(content.el);
 
-		if (callback) callback();
-	}
+    if (callback) {
+      callback();
+    }
+  }
 
-	$(document).on('chatRoute', function (event) {
-		var relativePathApi = $('#relativePathApi').val(),
-			socket = io.connect(relativePathApi);
+  $(document).on('loginRoute', loginRoute);
+  $(document).on('signupRoute', signupRoute);
+  $(document).on('chatRoute', chatRoute);
 
-		chatApp.services.mailslot.initialize(socket);
+  function loginRoute(event) {
+    changeView(chatApp.views.login.LoginView, null);
+  }
 
-		changeView(chatApp.views.chat.ChatView, function () {
-			chatApp.server(socket, view);
-		});
-	});
+  function signupRoute(event) {
+    changeView(chatApp.views.signup.SignupView, null);
+  }
 
-	$(document).on('loginRoute', function (event) {
-		changeView(chatApp.views.login.LoginView, null);
-	});
-    
-	$(document).on('signupRoute', function (event) {
-	    changeView(chatApp.views.signup.SignupView, null);
-	});
+  function chatRoute(event) {
+    var relativePathApi = $('#relativePathApi').val();
+    var socket = io.connect(relativePathApi);
+
+    chatApp.services.mailslot.initialize(socket);
+
+    changeView(chatApp.views.chat.ChatView, serverStart);
+
+    function serverStart() {
+      chatApp.server(socket, view);
+    }
+  }
 
 }();
